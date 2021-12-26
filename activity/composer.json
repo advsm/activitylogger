@@ -18,7 +18,8 @@
         "symfony/proxy-manager-bridge": "5.4.*",
         "symfony/runtime": "5.4.*",
         "symfony/yaml": "5.4.*",
-        "yoanm/symfony-jsonrpc-http-server": "^3.0"
+        "yoanm/symfony-jsonrpc-http-server": "^3.0",
+        "yoanm/symfony-jsonrpc-params-validator": "^2.0"
     },
     "config": {
         "allow-plugins": {

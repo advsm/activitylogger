@@ -3,10 +3,21 @@
 namespace App\Method;
 
 use Yoanm\JsonRpcServer\Domain\JsonRpcMethodInterface;
+use Yoanm\JsonRpcParamsSymfonyValidator\Domain\MethodWithValidatedParamsInterface;
+
 use Doctrine\ORM\EntityManager;
+
 use App\Entity\Visit;
 
-class LogVisitMethod implements JsonRpcMethodInterface
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Validator\Constraints\Ip;
+use Symfony\Component\Validator\Constraints\Url;
+
+class LogVisitMethod implements JsonRpcMethodInterface, MethodWithValidatedParamsInterface
 {
     /**
      * @var EntityManager
@@ -20,7 +31,6 @@ class LogVisitMethod implements JsonRpcMethodInterface
 
     public function apply(array $paramList = null) : string
     {
-
         $visit = new Visit();
 
         $visit->setUrl($paramList['url']);
@@ -32,5 +42,29 @@ class LogVisitMethod implements JsonRpcMethodInterface
         $this->entityManager->flush();
 
         return $visit->getId();
+    }
+
+    public function getParamsConstraint() : Constraint
+    {
+        return new Collection(['fields' => [
+            'url' => new Required([
+                new NotBlank(),
+                new Length(['max' => 512]),
+                new Url(),
+            ]),
+            'domain' => new Required([
+                new NotBlank(),
+                new Length(['max' => 64]),
+            ]),
+            'ip' => new Required([
+                new NotBlank(),
+                new Length(['max' => 16]),
+                new Ip(),
+            ]),
+            'user-agent' => new Required([
+                new NotBlank(),
+                new Length(['max' => 512]),
+            ])
+        ]]);
     }
 }
