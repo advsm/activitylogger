@@ -1,7 +1,7 @@
-create database `activity`;
+create database if not exists `activity` ;
 use activity;
 
-create table `visit` (
+create table if not exists `visit` (
     `id` int(11) not null auto_increment,
     `domain` varchar(64) not null,
     `url` varchar(512) collate utf8_unicode_ci not null,

@@ -61,7 +61,7 @@ class LogVisitMethod implements JsonRpcMethodInterface, MethodWithValidatedParam
                 new Length(['max' => 16]),
                 new Ip(),
             ]),
-            'user-agent' => new Required([
+            'user_agent' => new Required([
                 new NotBlank(),
                 new Length(['max' => 512]),
             ])

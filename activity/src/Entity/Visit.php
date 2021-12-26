@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="visit", indexes={@ORM\Index(name="domain", columns={"domain"}), @ORM\Index(name="url", columns={"url"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class Visit
 {
