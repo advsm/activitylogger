@@ -32,7 +32,7 @@ class JsonRpcClient
         return $this;
     }
 
-    public function request(string $method, array $params = []) : array
+    public function request(string $method, array $params = []) : array|string
     {
         $body = [
             "jsonrpc" => "2.0",
