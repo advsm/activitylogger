@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Component\JsonRpcClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,33 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[Route('/admin/activity', name: 'activity')]
-    public function activity(Request $request): Response
+    public function activity(Request $request, JsonRpcClient $jsonRpcClient): Response
     {
         $limit = 4;
         $page = $request->get('page') ?? 1;
         $offset = $page * $limit - $limit;
 
-        $client = HttpClient::create();
-        $body = [
-            "jsonrpc" => "2.0",
-            "method" => "history",
-            "params" => [
-                "offset" => $offset,
-                "limit" => $limit,
-            ],
-            "id" => time(),
-        ];
-
-        $response = $client->request('POST', 'http://nginx:8080/json-rpc', [
-            'body' => json_encode($body),
+        $result = $jsonRpcClient->request("history", [
+            "offset" => $offset,
+            "limit" => $limit,
         ]);
 
-        $json = json_decode($response->getContent(), true);
-
-        $total = $json['result']['total'];
+        $total = $result['total'];
         $pagesCount = ceil($total / $limit);
 
-        $urls = $json['result']['data'];
+        $urls = $result['data'];
 
         return $this->render('admin/activity.html.twig', [
             'page' => $page,
