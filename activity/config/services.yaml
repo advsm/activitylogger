@@ -36,3 +36,8 @@ services:
         public: false
         tags: [ { method: 'log', name: 'json_rpc_http_server.jsonrpc_method' } ]
         arguments: ['@doctrine.orm.entity_manager']
+
+    App\Method\VisitHistoryMethod:
+        public: false
+        tags: [ { method: 'history', name: 'json_rpc_http_server.jsonrpc_method' } ]
+        arguments: [ '@doctrine.orm.entity_manager' ]
