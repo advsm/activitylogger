@@ -1,6 +1,6 @@
-FROM nginx:latest
+FROM nginx
 
 ADD landing.conf /etc/nginx/conf.d/default.conf
 ADD activity.conf /etc/nginx/conf.d/activity.conf
 
-WORKDIR /var/www/
+WORKDIR /etc/nginx
